@@ -1,4 +1,16 @@
 {
   "name": "my-media-server",
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.6.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "serve": "^14.2.4",
+    "serve-handler": "^6.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
 }
