@@ -990,16 +990,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"my-media-server@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "my-media-server@workspace:."
-  dependencies:
-    nodemon: "npm:^3.1.9"
-    serve: "npm:^14.2.4"
-    serve-handler: "npm:^6.1.6"
-  languageName: unknown
-  linkType: soft
-
 "negotiator@npm:0.6.3":
   version: 0.6.3
   resolution: "negotiator@npm:0.6.3"
@@ -1319,6 +1309,16 @@ __metadata:
   checksum: 10c0/93abecd6214228d529065040f7c0cbe541c1cc321c6a94b8a968f45a519bd9c46a9fd5e45a9b24a1f5736c5b547b8fa60d5414ebc78f870e29431b64165c1d06
   languageName: node
   linkType: hard
+
+"serve@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "serve@workspace:."
+  dependencies:
+    nodemon: "npm:^3.1.9"
+    serve: "npm:^14.2.4"
+    serve-handler: "npm:^6.1.6"
+  languageName: unknown
+  linkType: soft
 
 "shebang-command@npm:^2.0.0":
   version: 2.0.0

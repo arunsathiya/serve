@@ -1,5 +1,5 @@
 {
-  "name": "my-media-server",
+  "name": "serve",
   "packageManager": "yarn@4.6.0",
   "type": "module",
   "scripts": {
