@@ -1,22 +1,28 @@
-import http from 'http';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { join, extname } from 'path';
 import fs from 'fs/promises';
-import path from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
 
-const server = http.createServer(async (request, response) => {
-  if (request.url === '/') {
-    try {
-      const imagesDir = join(__dirname, '../public/images');
+export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  try {
+    if (req.url === '/') {
+      const imagesDir = join(process.cwd(), 'public/images');
       const files = await fs.readdir(imagesDir);
       const imageFiles = files.filter(file => 
-        ['.jpg', '.jpeg', '.png', '.gif'].includes(path.extname(file).toLowerCase())
+        ['.jpg', '.jpeg', '.png', '.gif'].includes(extname(file).toLowerCase())
       );
 
-      response.writeHead(200, { 'Content-Type': 'text/html' });
-      response.write(`
+      res.setHeader('Content-Type', 'text/html');
+      res.send(`
         <!DOCTYPE html>
         <html>
           <head>
@@ -91,44 +97,9 @@ const server = http.createServer(async (request, response) => {
           </body>
         </html>
       `);
-      response.end();
-      return;
-    } catch (error) {
-      console.error('Error reading directory:', error);
-      response.writeHead(500);
-      response.end('Server Error');
-      return;
     }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-  // Serve static files
-  if (request.url.startsWith('/images/')) {
-    const filePath = join(__dirname, '../public', request.url);
-    try {
-      const data = await fs.readFile(filePath);
-      const ext = path.extname(filePath).toLowerCase();
-      const contentType = {
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.gif': 'image/gif'
-      }[ext] || 'application/octet-stream';
-
-      response.writeHead(200, { 'Content-Type': contentType });
-      response.end(data);
-    } catch (error) {
-      response.writeHead(404);
-      response.end('File not found');
-    }
-    return;
-  }
-
-  response.writeHead(404);
-  response.end('Not found');
-});
-
-const port = process.env.PORT || 3000;
-
-server.listen(port, () => {
-  console.log(`Running at http://localhost:${port}`);
-});
+}
